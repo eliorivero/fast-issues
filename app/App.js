@@ -41,7 +41,6 @@ export default function App() {
 					owner: result.data.user.data.login,
 					repos: result.data.repos.data.map( x => ( { id: x.id, name: x.name } ) ),
 				} );
-				console.log( result.data );
 			}
 		} )();
 	}, [] );

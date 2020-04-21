@@ -38,8 +38,22 @@ textarea {
 
 input[type=text], input[type=search] {
 	height: 22px;
-	width: 200px;
+	width: 250px;
 	padding: 5px 7px;
+}
+
+input[type=search] {
+	height: 36px;
+
+	&::-webkit-calendar-picker-indicator {
+		opacity: 100;
+		transition: transform .2s ease-out;
+		background: #fff;
+	}
+
+	&:focus::-webkit-calendar-picker-indicator {
+		transform: rotateZ(180deg)
+	}
 }
 
 button {
