@@ -9,7 +9,7 @@
 			<% } %>
   </head>
   <body>
-      <div id="app"></div>
-      <script type="text/javascript" src="build.js"></script>
+			<div id="app"></div>
+			<script type="text/javascript" src="<% if ( htmlWebpackPlugin.options.environment === 'development' ) { %>static/<% } %>build.js"></script>
   </body>
 </html>

@@ -18,15 +18,11 @@ textarea, button, input[type=text], input[type=search] {
 	font-size: 1.4rem;
 	border: 1px solid #ccc;
 	outline: 0;
+	display: block;
 
 	&:focus::placeholder {
 		color: transparent;
 	}
-}
-
-label {
-	display: block;
-	margin: 2rem 0 1rem;
 }
 
 textarea {
@@ -77,13 +73,6 @@ button {
     align-items: center;
 		justify-content: center;
 		margin-bottom: 2rem;
-	}
-
-	&__issues-help {
-		margin: .5rem 0 2rem;
-		color: #666;
-		font-size: 1.2rem;
-		line-height: 1.6rem;
 	}
 
 	&__error {

@@ -7,6 +7,7 @@ import axios from 'axios';
 /**
  * Internal dependencies
  */
+import Label from 'components/label';
 import './style.scss';
 
 const getFromCommaList = list =>
@@ -28,22 +29,43 @@ export default function App() {
 	const [ creating, setCreating ] = useState( false );
 	const [ error, setError ] = useState( '' );
 	const [ config, setConfig ] = useState( { owner: '', repo: '' } );
+	const [ isAuth, setIsAuth ] = useState( false );
 
 	useEffect( () => {
-		( async () => {
-			const result = await axios( {
-				url: '/api/user',
+		if ( isAuth ) {
+			fetchUserData();
+		} else {
+			doAuth();
+		}
+	}, [ isAuth ] );
+
+	const doAuth = async () => {
+		const result = await axios( {
+			url: '/api/auth',
+		} );
+
+		if ( result.data.error ) {
+			setError( result.data.error );
+		} else if ( result.data.auth ) {
+			setIsAuth( true );
+		} else {
+			window.location.href = `https://github.com/login/oauth/authorize?client_id=${ result.data.clientId }&scope=repo&state=${ result.data.state }`;
+		}
+	};
+
+	const fetchUserData = async () => {
+		const result = await axios( {
+			url: '/api/user',
+		} );
+		if ( result.data.error ) {
+			setError( result.data.error );
+		} else {
+			setConfig( {
+				owner: result.data?.user?.data?.login ?? '',
+				repos: result.data?.repos?.data?.map( x => ( { id: x.id, name: x.name } ) ) ?? [],
 			} );
-			if ( result.data.error ) {
-				setError( result.data.error );
-			} else {
-				setConfig( {
-					owner: result.data.user.data.login,
-					repos: result.data.repos.data.map( x => ( { id: x.id, name: x.name } ) ),
-				} );
-			}
-		} )();
-	}, [] );
+		}
+	};
 
 	const parseIssue = issue => {
 		const parsedIssue = issue.split( '|' );
@@ -104,37 +126,49 @@ export default function App() {
 			<form className="issue-creator">
 				{ config.owner && <p>Logged in as { config.owner }</p> }
 				{ config.repos && (
-					<p>
-						<label htmlFor="repo">Repository</label>
+					<>
+						<Label forField="repo">Repository</Label>
 						<input
 							{ ...repo }
 							list="repos-for-issues"
 							type="search"
 							id="repo"
 							disabled={ creating }
-							placeholder="Select repository"
+							placeholder="Choose the repository…"
 						/>
 						<datalist id="repos-for-issues">
 							{ config.repos.map( x => (
 								<option key={ `repo-${ x.id }` } value={ x.name } />
 							) ) }
 						</datalist>
-					</p>
+					</>
 				) }
-				<label htmlFor="issues">Issues</label>
+				<Label
+					forField="issues"
+					tooltip={
+						<>
+							<p>
+								Write issues, one on each line. A GitHub issue will be created for each line.
+								Separate with a pipe and type a comma-separated list of usernames to assign the the
+								Another pipe separates the description, and a final one expresses a comma-separated
+								list of tags. Follow this format:
+							</p>
+							<p>
+								Issue title | assignee1, assignee2, assigneeN | The issue description | label1,
+								label2, labelN
+							</p>
+						</>
+					}
+				>
+					Issues
+				</Label>
 				<div className="issue-creator__issues">
 					<textarea
 						{ ...issues }
 						id="issues"
 						disabled={ creating }
-						placeholder="Issue title | assignee | Description of the issue. | label"
+						placeholder="Title | assignee | Description | label"
 					/>
-					<p className="issue-creator__issues-help">
-						Write issues, one on each line. A GitHub issue will be created for each line. Separate
-						with a pipe and type a comma-separated list of usernames to assign the issue to. Another
-						pipe separates the description, and a final one expresses a comma-separated list of
-						tags.
-					</p>
 				</div>
 				<p>
 					<button onClick={ handleClick } disabled={ '' === issues.value || creating }>

@@ -29,17 +29,19 @@ const clientId = process.env.CLIENT_ID;
 const clientSecret = process.env.CLIENT_SECRET;
 
 app.get( '/', ( request, response ) => {
+	response.sendFile( path.resolve( __dirname, 'public', 'index.html' ) );
+} );
+
+app.get( '/api/auth', ( request, response ) => {
 	if ( undefined === request.session.accessToken ) {
 		request.session.csrf_string = randomString.generate();
-		response.redirect(
-			`https://github.com/login/oauth/authorize?client_id=${ clientId }&scope=repo&state=${ request.session.csrf_string }`
-		);
+		response.send( { auth: false, clientId, state: request.session.csrf_string } );
 	} else {
-		response.sendFile( path.resolve( __dirname, 'public', 'index.html' ) );
+		response.send( { auth: true } );
 	}
 } );
 
-app.get( '/redirect', ( request, response ) => {
+app.get( '/api/redirect', ( request, response ) => {
 	const returnedState = request.query.state;
 	if ( request.session.csrf_string === returnedState ) {
 		const body = {
