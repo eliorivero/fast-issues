@@ -14,6 +14,7 @@
 		"dotenv": "^8.2.0",
 		"express": "^4.17.1",
 		"express-session": "^1.17.1",
+		"prop-types": "^15.7.2",
 		"randomstring": "^1.1.5"
 	},
 	"devDependencies": {
@@ -21,7 +22,6 @@
 		"@babel/core": "^7.8.4",
 		"@babel/node": "^7.8.4",
 		"@babel/plugin-proposal-class-properties": "^7.8.3",
-		"@babel/polyfill": "^7.8.3",
 		"@babel/preset-env": "^7.8.4",
 		"@babel/preset-react": "^7.8.3",
 		"@wordpress/eslint-plugin": "^4.0.0",

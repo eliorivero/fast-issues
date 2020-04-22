@@ -1,0 +1,49 @@
+.has-tooltip {
+	display: flex;
+	justify-content: space-between;
+	align-items: baseline;
+}
+
+.tooltip {
+	position: relative;
+
+	&__content {
+		position: absolute;
+		top: 24px;
+		right: 0;
+		min-width: 300px;
+		background: #fff;
+    border: 1px solid #ddd;
+    padding: 10px 15px;
+		border-radius: 2px;
+		visibility: hidden;
+		color: #666;
+		font-size: 1.2rem;
+		line-height: 1.6rem;
+
+		p {
+			margin: .5rem 0 2rem;
+		}
+	}
+
+	&__trigger {
+		background: #eee;
+		border: 1px solid #ccc;
+		border-radius: 9em;
+		width: 18px;
+    height: 18px;
+    display: flex;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+		&:hover {
+			cursor: help;
+		}
+	}
+
+	&__trigger:hover + &__content {
+		visibility: visible;
+	}
+}
