@@ -98,7 +98,14 @@ app.post(
 				body && { body },
 				labels && { labels }
 			);
-			const newIssue = await github.issues.create( issue );
+			let newIssue;
+			try {
+				newIssue = await github.issues.create( issue );
+			} catch ( error ) {
+				clearInterval( loop );
+				response.json( { error: error.message } );
+				return;
+			}
 			toSend.push( {
 				title,
 				url: newIssue.data.html_url,
