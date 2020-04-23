@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import React, { Fragment, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 /**
@@ -120,9 +120,20 @@ export default function App() {
 
 	const handleSwitchMode = () => switchMode();
 
+	const heading = <h1>Create GitHub Issues</h1>;
+
+	if ( ! isAuth ) {
+		return (
+			<>
+				{ heading }
+				<p>Checking credentials…</p>
+			</>
+		);
+	}
+
 	return isAddMode ? (
-		<Fragment>
-			<h1>Create GitHub Issues</h1>
+		<>
+			{ heading }
 			<form className="issue-creator">
 				{ config.owner && <p>Logged in as { config.owner }</p> }
 				{ config.repos && (
@@ -176,9 +187,9 @@ export default function App() {
 					</button>
 				</p>
 			</form>
-		</Fragment>
+		</>
 	) : (
-		<Fragment>
+		<>
 			<h2>New issues created</h2>
 			{ creating && <div className="issue-creator__block">Creating issues…</div> }
 			{ 0 < newIssues.length && (
@@ -196,6 +207,6 @@ export default function App() {
 			{ ! creating && (
 				<button onClick={ handleSwitchMode }>{ error ? 'Try again' : 'Add more' }</button>
 			) }
-		</Fragment>
+		</>
 	);
 }
