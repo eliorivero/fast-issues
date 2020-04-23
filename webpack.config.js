@@ -4,6 +4,7 @@ const { CleanWebpackPlugin } = require( 'clean-webpack-plugin' );
 const MiniCssExtractPlugin = require( 'mini-css-extract-plugin' );
 const OptimizeCSSAssetsPlugin = require( 'optimize-css-assets-webpack-plugin' );
 const UglifyJsPlugin = require( 'uglifyjs-webpack-plugin' );
+const CopyPlugin = require( 'copy-webpack-plugin' );
 module.exports = {
 	entry: [ './app/main.js' ],
 	output: {
@@ -53,8 +54,9 @@ module.exports = {
 		new HtmlWebpackPlugin( {
 			template: 'app/index.html',
 			inject: false,
-			environment: process.env.NODE_ENV,
+			isDev: process.env.NODE_ENV === 'development',
 		} ),
 		new MiniCssExtractPlugin( { filename: 'static/style.css' } ),
+		new CopyPlugin( [ { from: 'app/favicon', to: '../public/static' } ] ),
 	],
 };
