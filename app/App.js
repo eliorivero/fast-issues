@@ -171,7 +171,7 @@ export default function App() {
 					/>
 				</div>
 				<p>
-					<button onClick={ handleClick } disabled={ '' === issues.value || creating }>
+					<button onClick={ handleClick } disabled={ '' === issues.value.trim() || creating }>
 						Go!
 					</button>
 				</p>
