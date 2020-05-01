@@ -28,7 +28,7 @@ export default function App() {
 	const [ isAddMode, setIsAddMode ] = useState( true );
 	const [ creating, setCreating ] = useState( false );
 	const [ error, setError ] = useState( '' );
-	const [ config, setConfig ] = useState( { owner: '', repo: '' } );
+	const [ config, setConfig ] = useState( { user: '', repo: '' } );
 	const [ isAuth, setIsAuth ] = useState( false );
 
 	useEffect( () => {
@@ -61,8 +61,8 @@ export default function App() {
 			setError( result.data.error );
 		} else {
 			setConfig( {
-				owner: result.data?.user?.data?.login ?? '',
-				repos: result.data?.repos?.data?.map( x => ( { id: x.id, name: x.name } ) ) ?? [],
+				user: result.data?.user?.data?.login ?? '',
+				repos: Object.keys( result.data?.repos ?? [] ),
 			} );
 		}
 	};
@@ -110,7 +110,6 @@ export default function App() {
 		setNewIssues( [] );
 		processIssues( {
 			repo: repo.value,
-			owner: config.owner,
 			issues: issues.value
 				.split( '\n' )
 				.filter( x => '' !== x )
@@ -135,7 +134,7 @@ export default function App() {
 		<>
 			{ heading }
 			<form className="issue-creator">
-				{ config.owner && <p>Logged in as { config.owner }</p> }
+				{ config.user && <p>Logged in as { config.user }</p> }
 				{ config.repos && (
 					<>
 						<Label forField="repo">Repository</Label>
@@ -149,7 +148,7 @@ export default function App() {
 						/>
 						<datalist id="repos-for-issues">
 							{ config.repos.map( x => (
-								<option key={ `repo-${ x.id }` } value={ x.name } />
+								<option key={ `repo-${ x }` } value={ x } />
 							) ) }
 						</datalist>
 					</>

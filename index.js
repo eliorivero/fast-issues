@@ -61,7 +61,14 @@ app.get( '/api/redirect', ( request, response ) => {
 					userAgent: 'Fast Issues 0.0.5',
 				} );
 				request.session.user = await request.session.github.users.getAuthenticated();
-				request.session.repos = await request.session.github.repos.list();
+				const repos = await request.session.github.repos.list();
+				request.session.repos = repos.data.reduce(
+					( acc, cur ) => ( {
+						...acc,
+						[ cur.name ]: cur.owner.login,
+					} ),
+					{}
+				);
 				response.redirect( '/' );
 			} )
 			.catch( error => response.status( 500 ).json( { message: error.message } ) );
@@ -76,7 +83,7 @@ app.post(
 	'/api/issues',
 	jsonParser,
 	wrapAsync( async ( request, response ) => {
-		const { issues, owner, repo } = request.body;
+		const { issues, repo } = request.body;
 		const github = new Octokit( {
 			auth: request.session.accessToken,
 			userAgent: 'Fast Issues 0.0.5',
@@ -90,7 +97,7 @@ app.post(
 			const issue = Object.assign(
 				{},
 				{
-					owner,
+					owner: request.session.repos[ repo ],
 					repo,
 					title,
 				},
