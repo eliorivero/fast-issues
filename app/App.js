@@ -143,7 +143,7 @@ export default function App() {
 									src={ config.user.avatar_url }
 									alt={ `User avatar for ${ config.user.login }` }
 								/>
-								{ config.user.name }
+								{ config.user.name ? config.user.name : config.user.login }
 							</a>
 						</p>
 					) }
