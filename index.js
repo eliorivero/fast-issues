@@ -19,7 +19,7 @@ app.use( express.static( 'public/static' ) );
 app.use(
 	session( {
 		secret: randomString.generate(),
-		cookie: { maxAge: 60000 },
+		cookie: { maxAge: 3600000 },
 		resave: false,
 		saveUninitialized: false,
 	} )

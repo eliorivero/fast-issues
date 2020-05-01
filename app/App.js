@@ -28,7 +28,7 @@ export default function App() {
 	const [ isAddMode, setIsAddMode ] = useState( true );
 	const [ creating, setCreating ] = useState( false );
 	const [ error, setError ] = useState( '' );
-	const [ config, setConfig ] = useState( { user: '', repo: '' } );
+	const [ config, setConfig ] = useState( { user: null, repo: '' } );
 	const [ isAuth, setIsAuth ] = useState( false );
 
 	useEffect( () => {
@@ -61,7 +61,7 @@ export default function App() {
 			setError( result.data.error );
 		} else {
 			setConfig( {
-				user: result.data?.user?.data?.login ?? '',
+				user: result.data?.user?.data ?? null,
 				repos: Object.keys( result.data?.repos ?? [] ),
 			} );
 		}
@@ -125,86 +125,100 @@ export default function App() {
 		return (
 			<>
 				{ heading }
-				<p>Checking credentials…</p>
+				<p className="logged-as">Checking credentials…</p>
 			</>
 		);
 	}
 
-	return isAddMode ? (
+	return (
 		<>
 			{ heading }
-			<form className="issue-creator">
-				{ config.user && <p>Logged in as { config.user }</p> }
-				{ config.repos && (
-					<>
-						<Label forField="repo">Repository</Label>
-						<input
-							{ ...repo }
-							list="repos-for-issues"
-							type="search"
-							id="repo"
-							disabled={ creating }
-							placeholder="Choose the repository…"
-						/>
-						<datalist id="repos-for-issues">
-							{ config.repos.map( x => (
-								<option key={ `repo-${ x }` } value={ x } />
-							) ) }
-						</datalist>
-					</>
-				) }
-				<Label
-					forField="issues"
-					tooltip={
+			{ isAddMode ? (
+				<form className="issue-creator">
+					{ config.user && (
+						<p className="logged-as">
+							Logged in as{ ' ' }
+							<a href={ config.user.html_url }>
+								<img
+									src={ config.user.avatar_url }
+									alt={ `User avatar for ${ config.user.login }` }
+								/>
+								{ config.user.name }
+							</a>
+						</p>
+					) }
+					{ config.repos && (
 						<>
-							<p>
-								Write issues, one on each line. A GitHub issue will be created for each line.
-								Separate with a pipe and type a comma-separated list of usernames to assign the the
-								Another pipe separates the description, and a final one expresses a comma-separated
-								list of tags. Follow this format:
-							</p>
-							<p>
-								Issue title | assignee1, assignee2, assigneeN | The issue description | label1,
-								label2, labelN
-							</p>
+							<Label forField="repo">Repository</Label>
+							<input
+								{ ...repo }
+								list="repos-for-issues"
+								type="search"
+								id="repo"
+								disabled={ creating }
+								placeholder="Choose the repository…"
+							/>
+							<datalist id="repos-for-issues">
+								{ config.repos.map( x => (
+									<option key={ `repo-${ x }` } value={ x } />
+								) ) }
+							</datalist>
 						</>
-					}
-				>
-					Issues
-				</Label>
-				<div className="issue-creator__issues">
-					<textarea
-						{ ...issues }
-						id="issues"
-						disabled={ creating }
-						placeholder="Title | assignee | Description | label"
-					/>
-				</div>
-				<p>
-					<button onClick={ handleClick } disabled={ '' === issues.value.trim() || creating }>
-						Go!
-					</button>
-				</p>
-			</form>
-		</>
-	) : (
-		<>
-			<h2>New issues created</h2>
-			{ creating && <div className="issue-creator__block">Creating issues…</div> }
-			{ 0 < newIssues.length && (
-				<div className="new-issues">
-					<ul>
-						{ newIssues.map( newIssue => (
-							<li key={ newIssue.issueId }>
-								<a href={ newIssue.url }>{ newIssue.title }</a>
-							</li>
-						) ) }
-					</ul>
-				</div>
-			) }
-			{ error && <p className="issue-creator__error">{ error }</p> }
-			{ ! creating && (
-				<button onClick={ handleSwitchMode }>{ error ? 'Try again' : 'Add more' }</button>
+					) }
+					<Label
+						forField="issues"
+						tooltip={
+							<>
+								<p>Write an issue on each line and a GitHub issue will be created for each line.</p>
+								<p>
+									Separate with a pipe and type a comma-separated list of GitHub usernames to assign
+									it. Separate the description with another pipe. It can have any length but do not
+									use a line break. Use a final pipe to define a comma-separated list of tags.
+								</p>
+							</>
+						}
+					>
+						Issues
+					</Label>
+					<div className="issue-creator__issues">
+						<textarea
+							{ ...issues }
+							id="issues"
+							disabled={ creating }
+							placeholder="Write the issues…"
+						/>
+						<p className="issue-creator__howto">
+							Enter issues with this format:
+							<br /> Issue title | assignee1, assignee2, assigneeN | Issue description | label1,
+							label2, labelN
+						</p>
+					</div>
+					<p>
+						<button onClick={ handleClick } disabled={ '' === issues.value.trim() || creating }>
+							Go!
+						</button>
+					</p>
+				</form>
+			) : (
+				<>
+					{ ! creating && <h2>New issues created</h2> }
+					{ creating && <div className="issue-creator__block">Creating issues…</div> }
+					{ 0 < newIssues.length && (
+						<div className="new-issues">
+							<ul>
+								{ newIssues.map( newIssue => (
+									<li key={ newIssue.issueId }>
+										<a href={ newIssue.url }>{ newIssue.title }</a>
+									</li>
+								) ) }
+							</ul>
+						</div>
+					) }
+					{ error && <p className="issue-creator__error">{ error }</p> }
+					{ ! creating && (
+						<button onClick={ handleSwitchMode }>{ error ? 'Try again' : 'Add more' }</button>
+					) }
+				</>
 			) }
 		</>
 	);

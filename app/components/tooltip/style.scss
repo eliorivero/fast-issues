@@ -9,15 +9,14 @@
 
 	&__content {
 		position: absolute;
-		top: 24px;
-		right: 0;
+		top: 0;
+		right: 24px;
 		min-width: 300px;
 		background: #fff;
     border: 1px solid #ddd;
     padding: 10px 15px;
 		border-radius: 2px;
 		visibility: hidden;
-		color: #666;
 		font-size: 1.2rem;
 		line-height: 1.6rem;
 
@@ -27,8 +26,9 @@
 	}
 
 	&__trigger {
-		background: #eee;
-		border: 1px solid #ccc;
+		background-color: #fff;
+		border: 1px solid #b8a7dc;
+    color: #9d99bf;
 		border-radius: 9em;
 		width: 18px;
     height: 18px;

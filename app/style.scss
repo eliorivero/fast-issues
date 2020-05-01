@@ -5,18 +5,34 @@ html {
 body {
 	padding-top: 5rem;
 	font: 1.4rem/1.9rem -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+	background: linear-gradient(0deg, #ffdcf8 0%, #aeb6f3 100%);
+	height: 100vh;
+	color: #4e4a84
 }
 
 a {
-	color: #f14a23;
-	box-shadow: 0px 2px 0px #fff, 0px 8px 0px #baeaef;
+	color: #4e4a84;
 	text-decoration: none;
+
+	&:hover {
+		text-decoration: underline;
+	}
+}
+
+h1 {
+	margin-bottom: 4rem;
+	color: #454271;
+}
+
+h2 {
+	margin-bottom: 2rem;
 }
 
 textarea, button, input[type=text], input[type=search] {
 	-webkit-appearance: none;
 	font-size: 1.4rem;
-	border: 1px solid #ccc;
+	border: 1px solid #d1cbde;
+	color: #484561;
 	outline: 0;
 	display: block;
 
@@ -30,6 +46,9 @@ textarea {
 	height: 192px;
 	padding: 5px 7px;
 	box-sizing: border-box;
+}
+::placeholder {
+	color: #b099b5;
 }
 
 input[type=text], input[type=search] {
@@ -54,20 +73,37 @@ input[type=search] {
 
 button {
 	height: 32px;
-	width: 80px;
+	background: #594daf;
+	color: #fff;
+	border: 0;
+	border-radius: 3px;
+	padding: 0 16px;
+
+	&:hover {
+		cursor: pointer;
+	}
+
+	&:disabled {
+		background: #b7a9d0;
+    cursor: not-allowed;
+	}
 }
 
 #app {
-	width: 600px;
+	max-width: 600px;
 	margin: 0 auto;
+	background: rgba(255,255,255,.4);
+	padding: 24px;
+	border: 1px solid rgba(255, 255, 255, 0.6);
+	box-shadow: 0 2px 5px 0px #b1789a61;
 }
 
 .issue-creator {
-
+	
 	&__block {
-    background: rgba(255, 255, 255, 0.75);
+		background: rgba(255, 255, 255, 0.5);
+		border: 1px solid #fff;
     height: 192px;
-    border: 1px solid #ccc;
 		box-sizing: border-box;
 		display: flex;
     align-items: center;
@@ -78,16 +114,56 @@ button {
 	&__error {
 		color: #f12323;
 	}
+
+	&__howto {
+		color: #b39bbf;
+		margin-top: 8px;
+		font-size: 1.2rem;
+	}
+}
+
+.logged-as {
+	line-height: 2.5rem;
+	background: rgba(255, 255, 255, 0.5);
+	padding: .5rem 1.5rem;
+	border: 1px solid #fff;
+	border-radius: 5em;
+
+	img {
+		width: 24px;
+    height: 24px;
+    border-radius: 9em;
+    vertical-align: bottom;
+    margin: 0 6px 0 2px;
+	}
 }
 
 .new-issues {
 	margin-bottom: 3rem;
+	padding: 21px 16px 32px;
+	background: rgba(255, 255, 255, 0.5);
+	border: 1px solid #fff;
+	
+	a {
+		color: #625aa0;
+    box-shadow: 0px 3px 0px 0px #f7a1e8, 0px 6px 0px 0px #cabfe6;
+    text-decoration: none;
+    font-size: 1.6rem;
+    padding-bottom: 5px;
+		font-weight: 400;
+		
+		&:hover {
+			box-shadow: 0px 3px 0px 0px #ff7ee9, 0px 6px 0px 0px #d5c5ff;
+		}
+	}
+	
 	ul {
 		list-style: none;
 		padding-left: 0;
+		margin: 0;
 
-		li {
-			margin-bottom: 1rem;
+		li:not(:last-child) {
+			margin-bottom: 3rem;
 		}
 	}
 }
