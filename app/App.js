@@ -188,7 +188,7 @@ export default function App() {
 							placeholder="Write the issues…"
 						/>
 						<p className="issue-creator__howto">
-							Enter issues with this format:
+							A new line will start a new issue. Enter each issue with this format:
 							<br /> Issue title | assignee1, assignee2, assigneeN | Issue description | label1,
 							label2, labelN
 						</p>
