@@ -1,6 +1,11 @@
 {
 	"presets": [
-		"@babel/preset-env",
+		[
+			"@babel/preset-env",
+			{
+				"targets": [ "chrome 80", "firefox 77" ]
+			}
+		],
 		"@babel/preset-react"
 	],
 	"plugins": [

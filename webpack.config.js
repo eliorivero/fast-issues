@@ -6,7 +6,7 @@ const OptimizeCSSAssetsPlugin = require( 'optimize-css-assets-webpack-plugin' );
 const UglifyJsPlugin = require( 'uglifyjs-webpack-plugin' );
 const CopyPlugin = require( 'copy-webpack-plugin' );
 module.exports = {
-	entry: [ './app/main.js' ],
+	entry: [ './app/main.tsx' ],
 	output: {
 		path: path.join( __dirname, 'public' ),
 		filename: 'static/build.js',
@@ -28,6 +28,11 @@ module.exports = {
 				},
 			},
 			{
+				test: /\.tsx?$/,
+				exclude: /node_modules/,
+				loader: 'ts-loader',
+			},
+			{
 				test: /\.scss$/,
 				use: [
 					'development' === process.env.NODE_ENV ? 'style-loader' : MiniCssExtractPlugin.loader,
@@ -38,7 +43,7 @@ module.exports = {
 		],
 	},
 	resolve: {
-		extensions: [ '*', '.js', '.jsx' ],
+		extensions: [ '*', '.js', '.jsx', '.ts', '.tsx' ],
 		modules: [ path.resolve( __dirname, 'app' ), 'node_modules' ],
 		mainFiles: [ 'index' ],
 	},

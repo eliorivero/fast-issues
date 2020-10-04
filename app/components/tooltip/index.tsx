@@ -9,7 +9,15 @@ import PropTypes from 'prop-types';
  */
 import './style.scss';
 
-export default function Tooltip( { content } ) {
+interface TooltipProps {
+	content: string | JSX.Element
+}
+
+Tooltip.propTypes = {
+	content: PropTypes.object,
+};
+
+export default function Tooltip( { content }: TooltipProps ): JSX.Element {
 	return (
 		<div className="tooltip">
 			<div className="tooltip__trigger">?</div>
@@ -17,7 +25,3 @@ export default function Tooltip( { content } ) {
 		</div>
 	);
 }
-
-Tooltip.propTypes = {
-	content: PropTypes.object,
-};

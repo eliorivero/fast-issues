@@ -10,7 +10,19 @@ import PropTypes from 'prop-types';
 import Tooltip from 'components/tooltip';
 import './style.scss';
 
-export default function Label( { forField, tooltip = null, children } ) {
+interface LabelProps {
+	children: string;
+	forField: string;
+	tooltip?: string | JSX.Element;
+}
+
+Label.propTypes = {
+	children: PropTypes.string,
+	forField: PropTypes.string,
+	tooltip: PropTypes.string,
+};
+
+export default function Label( { forField, tooltip = null, children }: LabelProps ): JSX.Element {
 	const hasTooltip = null === tooltip ? '' : 'has-tooltip';
 	return (
 		<div className={ `form-field ${ hasTooltip }` }>
@@ -19,7 +31,3 @@ export default function Label( { forField, tooltip = null, children } ) {
 		</div>
 	);
 }
-
-Label.propTypes = {
-	tooltip: PropTypes.object,
-};

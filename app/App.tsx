@@ -10,7 +10,19 @@ import axios from 'axios';
 import Label from 'components/label';
 import './style.scss';
 
-const getFromCommaList = list =>
+type UserConfig = {
+	name: string;
+	login: string;
+	html_url: string;
+	avatar_url: string;
+}
+
+interface SetConfigProps {
+	repos: string[];
+	user: UserConfig;
+}
+
+const getFromCommaList = (list: string) =>
 	list.split( ',' ).reduce( ( acc, curr ) => {
 		const x = curr.trim();
 		return x ? [ ...acc, x ] : acc;
@@ -18,7 +30,7 @@ const getFromCommaList = list =>
 
 const useField = () => {
 	const [ value, setValue ] = useState( '' );
-	return { value, onChange: x => setValue( 'string' === typeof x ? x : x.target.value ) };
+	return { value, onChange: (x: React.FormEvent< HTMLInputElement|HTMLTextAreaElement > | string) => setValue( 'string' === typeof x ? x : x.currentTarget.value ) };
 };
 
 export default function App() {
@@ -28,7 +40,7 @@ export default function App() {
 	const [ isAddMode, setIsAddMode ] = useState( true );
 	const [ creating, setCreating ] = useState( false );
 	const [ error, setError ] = useState( '' );
-	const [ config, setConfig ] = useState( { user: null, repo: '' } );
+	const [ config, setConfig ] = useState<SetConfigProps>( { user: null, repos: [] } );
 	const [ isAuth, setIsAuth ] = useState( false );
 
 	useEffect( () => {
@@ -67,7 +79,7 @@ export default function App() {
 		}
 	};
 
-	const parseIssue = issue => {
+	const parseIssue = (issue: string) => {
 		const parsedIssue = issue.split( '|' );
 		return Object.assign(
 			{},
@@ -82,7 +94,7 @@ export default function App() {
 		);
 	};
 
-	const processIssues = async data => {
+	const processIssues = async (data: { repo: string; issues: any[]; }) => {
 		const result = await axios( {
 			method: 'post',
 			url: '/api/issues',
@@ -159,7 +171,7 @@ export default function App() {
 								placeholder="Choose the repository…"
 							/>
 							<datalist id="repos-for-issues">
-								{ config.repos.map( x => (
+								{ config.repos.map( (x: string) => (
 									<option key={ `repo-${ x }` } value={ x } />
 								) ) }
 							</datalist>

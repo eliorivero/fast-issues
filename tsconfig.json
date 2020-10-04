@@ -1,0 +1,23 @@
+{
+	"compilerOptions": {
+		"allowSyntheticDefaultImports": true,
+		"esModuleInterop": true,
+		"sourceMap": true,
+		"noImplicitAny": true,
+		"module": "esnext",
+		"target": "es5",
+		"jsx": "react",
+		"moduleResolution": "node",
+		"baseUrl": "./app",
+		"paths": {
+			"components/*": [ "./components/*" ],
+			"assets/*": [ "./assets/*" ],
+			"utils/*": [ "./utils/*" ],
+		},
+	},
+	"exclude": [
+		"./app/**/test.tsx",
+		"node_modules",
+		"./public/"
+	]
+} 
